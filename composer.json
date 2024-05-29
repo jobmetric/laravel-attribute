@@ -1,0 +1,46 @@
+{
+    "name": "jobmetric/laravel-attribute",
+    "description": "This is a attribute management package for Laravel that you can use in your projects.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "jobmetric",
+        "package",
+        "attribute",
+        "management"
+    ],
+    "homepage": "https://doc.jobmetric.net/package/laravel-attribute",
+    "authors": [
+        {
+            "name": "Majid Mohammadian",
+            "email": "majeedmohammadian@gmail.com",
+            "homepage": "https://www.linkedin.com/in/majidmohammadian/",
+            "role": "Full Stack Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.0.1",
+        "laravel/framework": ">=9.19",
+        "jobmetric/laravel-package-core": "^1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "JobMetric\\Attribute\\": "src/",
+            "JobMetric\\Attribute\\Factories\\": "database/factories/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JobMetric\\Attribute\\AttributeServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "support": {
+        "issues": "https://github.com/jobmetric/laravel-attribute/issues",
+        "forum": "https://twitter.com/jobmetric",
+        "source": "https://github.com/jobmetric/laravel-attribute"
+    }
+}
