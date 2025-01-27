@@ -5,14 +5,18 @@ namespace JobMetric\Attribute\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use JobMetric\Translation\Contracts\TranslationContract;
 use JobMetric\Translation\HasTranslation;
 
 /**
- * JobMetric\Attribute\Models\Attribute
+ * JobMetric\Attribute\Models\AttributeValue
  *
  * @property int $id
  * @property int $attribute_id
+ *
+ * @property-read Attribute $attribute
+ * @property-read BelongsToMany $attributeRelations
  *
  * @method static find(int $int)
  */
@@ -54,12 +58,22 @@ class AttributeValue extends Model implements TranslationContract
     }
 
     /**
-     * Attribute relation
+     * attribute relation
      *
      * @return BelongsTo
      */
     public function attribute(): BelongsTo
     {
         return $this->belongsTo(Attribute::class, 'attribute_id');
+    }
+
+    /**
+     * attributeRelations relation
+     *
+     * @return BelongsToMany
+     */
+    public function attributeRelations(): BelongsToMany
+    {
+        return $this->belongsToMany(AttributeRelation::class, config('attribute.tables.attribute_relation_value'), 'attribute_value_id', 'attribute_relation_id');
     }
 }

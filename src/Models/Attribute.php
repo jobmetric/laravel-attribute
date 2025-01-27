@@ -2,6 +2,8 @@
 
 namespace JobMetric\Attribute\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,6 +19,13 @@ use JobMetric\Translation\HasTranslation;
  * @property bool $is_special
  * @property bool $is_filter
  * @property int $ordering
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ *
+ * @property-read Collection|AttributeValue[] $attributeValues
+ * @property-read int|null $attribute_values_count
+ * @property-read Collection|AttributeRelation[] $attributeRelation
+ * @property-read int|null $attribute_relation_count
  *
  * @method static find(int $int)
  */
@@ -66,12 +75,22 @@ class Attribute extends Model implements TranslationContract
     }
 
     /**
-     * Attribute values relation
+     * attributeValues relation
      *
      * @return HasMany
      */
     public function attributeValues(): HasMany
     {
         return $this->hasMany(AttributeValue::class, 'attribute_id');
+    }
+
+    /**
+     * attributeRelation relation
+     *
+     * @return HasMany
+     */
+    public function attributeRelation(): HasMany
+    {
+        return $this->hasMany(AttributeRelation::class, 'attribute_id');
     }
 }
