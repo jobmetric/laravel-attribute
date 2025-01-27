@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use JobMetric\Attribute\Enums\AttributeTypeEnum;
 
@@ -17,6 +18,8 @@ return new class extends Migration {
             $table->id();
 
             $table->morphs('galleryable');
+
+            $table->dateTime('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
