@@ -19,6 +19,7 @@ class AttributeServiceProvider extends PackageCoreServiceProvider
         $package->name('laravel-attribute')
             ->hasConfig()
             ->hasMigration()
+            ->hasRoute()
             ->hasTranslation();
     }
 }
