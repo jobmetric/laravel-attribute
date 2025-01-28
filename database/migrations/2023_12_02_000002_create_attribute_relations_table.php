@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
@@ -45,7 +46,7 @@ return new class extends Migration {
              * note: Its value is taken directly from the attribute table and is used only for better query execution
              */
 
-            $table->timestamps();
+            $table->dateTime('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

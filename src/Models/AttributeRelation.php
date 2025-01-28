@@ -2,6 +2,7 @@
 
 namespace JobMetric\Attribute\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property bool $is_gallery
  * @property bool $is_special
  * @property bool $is_filter
+ * @property Carbon $created_at
  *
  * @property-read Model $attributable
  * @property-read Attribute $attribute
@@ -29,6 +31,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class AttributeRelation extends Model
 {
     use HasFactory;
+
+    const UPDATED_AT = null;
 
     protected $fillable = [
         'attributable_type',
