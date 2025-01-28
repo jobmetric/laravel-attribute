@@ -19,6 +19,8 @@ return [
     ],
 
     "exceptions" => [
+        "attribute_not_found" => "Attribute with number :number not found.",
+        "attribute_used" => "Attribute :name is used.",
     ],
 
 ];

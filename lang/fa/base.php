@@ -19,6 +19,8 @@ return [
     ],
 
     "exceptions" => [
+        "attribute_not_found" => "ویژگی با شماره :number یافت نشد.",
+        "attribute_used" => "ویژگی :name استفاده شده است.",
     ],
 
 ];
