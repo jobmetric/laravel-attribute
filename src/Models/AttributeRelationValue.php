@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read AttributeRelation $attributeRelation
  * @property-read AttributeValue $attributeValue
  *
- * @method static find(int $int)
+ * @method AttributeRelationValue find(int $int)
  */
 class AttributeRelationValue extends Pivot
 {

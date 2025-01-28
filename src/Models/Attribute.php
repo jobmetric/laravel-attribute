@@ -27,7 +27,7 @@ use JobMetric\Translation\HasTranslation;
  * @property-read Collection|AttributeRelation[] $attributeRelation
  * @property-read int|null $attribute_relation_count
  *
- * @method static find(int $int)
+ * @method Attribute find(int $int)
  */
 class Attribute extends Model implements TranslationContract
 {

@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read Attribute $attribute
  * @property-read BelongsToMany $attributeValues
  *
- * @method static find(int $int)
+ * @method AttributeRelation find(int $int)
  */
 class AttributeRelation extends Model
 {

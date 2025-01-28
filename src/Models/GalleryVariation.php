@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read Collection|GalleryVariationAttributeValue[] $galleryVariationAttributeValues
  * @property-read int|null $gallery_variation_attribute_values_count
  *
- * @method static find(int $int)
+ * @method GalleryVariation find(int $int)
  */
 class GalleryVariation extends Model
 {

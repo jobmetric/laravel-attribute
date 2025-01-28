@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read AttributeRelation $attributeRelation
  * @property-read AttributeValue $attributeValue
  *
- * @method static find(int $int)
+ * @method GalleryVariationAttributeValue find(int $int)
  */
 class GalleryVariationAttributeValue extends Pivot
 {
