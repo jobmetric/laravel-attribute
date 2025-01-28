@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use JobMetric\Attribute\Events\AttributableResourceEvent;
 
 /**
  * JobMetric\Attribute\Models\AttributeRelation
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read Model $attributable
  * @property-read Attribute $attribute
  * @property-read BelongsToMany $attributeValues
+ * @property-read mixed $attributable_resource
  *
  * @method AttributeRelation find(int $int)
  */
@@ -94,5 +96,16 @@ class AttributeRelation extends Model
     public function attributeValues(): BelongsToMany
     {
         return $this->belongsToMany(AttributeValue::class, config('attribute.tables.attribute_relation_value'), 'attribute_relation_id', 'attribute_value_id');
+    }
+
+    /**
+     * Get the attributable resource attribute.
+     */
+    public function getAttributableResourceAttribute()
+    {
+        $event = new AttributableResourceEvent($this->attributable);
+        event($event);
+
+        return $event->resource;
     }
 }
