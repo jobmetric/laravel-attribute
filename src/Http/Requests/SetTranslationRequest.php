@@ -6,14 +6,12 @@ use Exception;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use InvalidArgumentException;
-use JobMetric\Taxonomy\Facades\TaxonomyType;
-use JobMetric\Taxonomy\Models\Taxonomy;
-use JobMetric\Taxonomy\Rules\TaxonomyExistRule;
-use JobMetric\Translation\Http\Requests\TranslationTypeObjectRequest;
+use JobMetric\Attribute\Models\Attribute;
+use JobMetric\Translation\Http\Requests\TranslationArrayRequest;
 
 class SetTranslationRequest extends FormRequest
 {
-    use TranslationTypeObjectRequest;
+    use TranslationArrayRequest;
 
     public string|null $type = null;
 
@@ -34,7 +32,6 @@ class SetTranslationRequest extends FormRequest
     public function rules(): array
     {
         $form_data = request()->all();
-        $type = $this->route()->parameters()['type'];
 
         $locale = $form_data['locale'] ?? null;
         $id = $form_data['translatable_id'] ?? null;
@@ -47,21 +44,14 @@ class SetTranslationRequest extends FormRequest
             throw new InvalidArgumentException('Translatable ID is required', 400);
         }
 
-        /**
-         * @var Taxonomy $taxonomy
-         */
-        $taxonomy = Taxonomy::query()->findOrFail($id);
+        Attribute::query()->findOrFail($id);
 
         $rules = [
-            'locale' => ['required', 'string'],
-            'translatable_id' => ['required', 'integer', new TaxonomyExistRule($type)],
+            'locale' => 'required|string',
+            'translatable_id' => 'required|integer|exists:attributes,id',
         ];
 
-        TaxonomyType::checkType($type);
-
-        $taxonomyType = TaxonomyType::type($type);
-
-        $this->renderTranslationFiled($rules, $form_data, $taxonomyType->getTranslation(), Taxonomy::class, object_id: $id, parent_id: $taxonomy->parent_id, parent_where: ['type' => $type]);
+        $this->renderTranslationFiled($rules, $form_data, Attribute::class, object_id: $id);
 
         return $rules;
     }
@@ -74,12 +64,9 @@ class SetTranslationRequest extends FormRequest
     public function attributes(): array
     {
         $form_data = request()->all();
-        $type = $this->route()->parameters()['type'];
-
-        $taxonomyType = TaxonomyType::type($type);
 
         $params = [];
-        $this->renderTranslationAttribute($params, $form_data, $taxonomyType->getTranslation());
+        $this->renderTranslationAttribute($params, $form_data, Attribute::class, 'attribute::base.form.attribute.fields.{field}.title');
 
         return $params;
     }
