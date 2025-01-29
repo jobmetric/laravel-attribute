@@ -21,7 +21,6 @@ class AttributeFactory extends Factory
     {
         return [
             'type' => null,
-            'is_gallery' => false,
             'is_special' => false,
             'is_filter' => false,
             'ordering' => 0,
@@ -39,20 +38,6 @@ class AttributeFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'type' => $type
-        ]);
-    }
-
-    /**
-     * set is_gallery
-     *
-     * @param bool $isGallery
-     *
-     * @return static
-     */
-    public function setIsGallery(bool $isGallery): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'is_gallery' => $isGallery
         ]);
     }
 

@@ -15,7 +15,6 @@ use JobMetric\Translation\HasTranslation;
  *
  * @property int $id
  * @property string $type
- * @property bool $is_gallery
  * @property bool $is_special
  * @property bool $is_filter
  * @property int $ordering
@@ -24,8 +23,9 @@ use JobMetric\Translation\HasTranslation;
  *
  * @property-read Collection|AttributeValue[] $attributeValues
  * @property-read int|null $attribute_values_count
- * @property-read Collection|AttributeRelation[] $attributeRelation
- * @property-read int|null $attribute_relation_count
+ * @property-read Collection|AttributeRelation[] $attributeRelations
+ * @property-read int|null $attribute_relations_count
+ * @property-read mixed $translations
  *
  * @method Attribute find(int $int)
  */
@@ -36,7 +36,6 @@ class Attribute extends Model implements TranslationContract
 
     protected $fillable = [
         'type',
-        'is_gallery',
         'is_special',
         'is_filter',
         'ordering',
@@ -49,7 +48,6 @@ class Attribute extends Model implements TranslationContract
      */
     protected $casts = [
         'type' => 'string',
-        'is_gallery' => 'boolean',
         'is_special' => 'boolean',
         'is_filter' => 'boolean',
         'ordering' => 'integer',
@@ -89,7 +87,7 @@ class Attribute extends Model implements TranslationContract
      *
      * @return HasMany
      */
-    public function attributeRelation(): HasMany
+    public function attributeRelations(): HasMany
     {
         return $this->hasMany(AttributeRelation::class, 'attribute_id');
     }

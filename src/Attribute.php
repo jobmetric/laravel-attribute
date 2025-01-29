@@ -38,8 +38,8 @@ class Attribute
     {
         $fields = [
             'id',
+            'name',
             'type',
-            'is_gallery',
             'is_special',
             'is_filter',
             'ordering',
@@ -52,7 +52,19 @@ class Attribute
 
         $locale = app()->getLocale();
 
-        $query = AttributeModel::query()->select([$attribute_table . '.*', 't.value as name']);
+        $query = AttributeModel::query()->select([$attribute_table . '.*']);
+
+        // Get the name of the attribute
+        $attribute_name = Translation::query()
+            ->select('value')
+            ->whereColumn('translatable_id', $attribute_table . '.id')
+            ->where([
+                'translatable_type' => AttributeModel::class,
+                'locale' => $locale,
+                'key' => 'name'
+            ])
+            ->getQuery();
+        $query->selectSub($attribute_name, 'name');
 
         // Join the translation table for select the name of the attribute
         $query->leftJoin($translation_table . ' as t', function ($join) use ($attribute_table, $locale) {
@@ -140,7 +152,6 @@ class Attribute
         return DB::transaction(function () use ($data) {
             $attribute = new AttributeModel;
             $attribute->type = $data['type'];
-            $attribute->is_gallery = $data['is_gallery'] ?? false;
             $attribute->is_special = $data['is_special'] ?? false;
             $attribute->is_filter = $data['is_filter'] ?? false;
             $attribute->ordering = $data['ordering'] ?? 0;
@@ -177,7 +188,7 @@ class Attribute
             throw new AttributeNotFoundException($attribute_id);
         }
 
-        $validator = Validator::make($data, (new UpdateAttributeRequest)->setAttributeId($attribute_id)->setData($data)->rules());
+        $validator = Validator::make($data, (new UpdateAttributeRequest)->setAttributeId($attribute_id)->rules());
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
 
@@ -194,10 +205,6 @@ class Attribute
         return DB::transaction(function () use ($attribute_id, $data, $attribute) {
             if (array_key_exists('type', $data)) {
                 $attribute->type = $data['type'];
-            }
-
-            if (array_key_exists('is_gallery', $data)) {
-                $attribute->is_gallery = $data['is_gallery'];
             }
 
             if (array_key_exists('is_special', $data)) {

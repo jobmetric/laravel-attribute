@@ -22,11 +22,6 @@ return new class extends Migration {
              * use: @extends AttributeTypeEnum
              */
 
-            $table->boolean('is_gallery')->default(false)->index();
-            /**
-             * note: If the gallery is active, a variable will be added to add the gallery to the product interface
-             */
-
             $table->boolean('is_special')->default(false)->index();
             /**
              * note: If this option is enabled, the specifications will be displayed on the top of the page in a special way
