@@ -17,6 +17,8 @@ return new class extends Migration {
 
             $table->foreignId('attribute_id')->index()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
 
+            $table->integer('ordering')->default(0);
+
             $table->timestamps();
         });
     }
