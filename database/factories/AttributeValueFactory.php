@@ -21,6 +21,7 @@ class AttributeValueFactory extends Factory
     {
         return [
             'attribute_id' => null,
+            'ordering' => 0,
         ];
     }
 
@@ -35,6 +36,20 @@ class AttributeValueFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'attribute_id' => $attributeId
+        ]);
+    }
+
+    /**
+     * set ordering
+     *
+     * @param int $ordering
+     *
+     * @return static
+     */
+    public function setOrdering(int $ordering): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'ordering' => $ordering
         ]);
     }
 }
