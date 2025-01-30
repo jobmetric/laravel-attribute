@@ -20,10 +20,10 @@
                         <label class="form-check-label ms-0" for="check-all"></label>
                     </div>
                 </th>
-                <th width="58%" class="text-gray-800 auto-width-content">{{ trans('package-core::base.list.columns.name') }}</th>
+                <th width="48%" class="text-gray-800 auto-width-content">{{ trans('package-core::base.list.columns.name') }}</th>
                 <th width="10%" class="text-center text-gray-800">{{ trans('package-core::base.list.columns.ordering') }}</th>
                 <th width="15%" class="text-center text-gray-800">{{ trans('package-core::base.list.columns.translations') }}</th>
-                <th width="15%" class="text-center text-gray-800">{{ trans('package-core::base.list.columns.action') }}</th>
+                <th width="25%" class="text-center text-gray-800">{{ trans('package-core::base.list.columns.action') }}</th>
             </tr>
         </thead>
     </x-list-view>
