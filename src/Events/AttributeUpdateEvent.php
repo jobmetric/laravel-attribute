@@ -10,7 +10,7 @@ class AttributeUpdateEvent
      * Create a new event instance.
      */
     public function __construct(
-        public readonly Attribute $taxonomy,
+        public readonly Attribute $attribute,
         public readonly array     $data,
     )
     {
