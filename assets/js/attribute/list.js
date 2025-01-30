@@ -172,11 +172,19 @@ loadScriptsSequentially([
                 // action
                 {
                     data: function(e) {
-                        return `<div class="d-flex justify-content-center align-items-center">
-                                    <a href="${getLocalize('attribute.route')}/${e.id}/edit" class="btn btn-sm btn-outline btn-outline-dashed bg-light-success btn-color-gray-800">
-                                        <i class="la la-edit fs-2 position-absolute"></i>
-                                        <span class="ps-9">${getLocalize('language.panelio.button.edit')}</span>
-                                    </a>
+                        return `<div class="d-flex justify-content-end align-items-center">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <a href="${getLocalize('attribute.route')}/${e.id}/values" class="btn btn-sm btn-outline btn-outline-dashed bg-light-danger btn-color-gray-800 me-3">
+                                            <i class="la la-bars fs-2 position-absolute"></i>
+                                            <span class="ps-9">${getLocalize('attribute.language.buttons.attribute_value_list')}</span>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <a href="${getLocalize('attribute.route')}/${e.id}/edit" class="btn btn-sm btn-outline btn-outline-dashed bg-light-success btn-color-gray-800">
+                                            <i class="la la-edit fs-2 position-absolute"></i>
+                                            <span class="ps-9">${getLocalize('language.panelio.button.edit')}</span>
+                                        </a>
+                                   </div>
                                </div>`
                     },
                     sortable: false
