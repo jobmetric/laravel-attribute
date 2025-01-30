@@ -4,6 +4,7 @@ namespace JobMetric\Attribute;
 
 use Illuminate\Support\Facades\Route;
 use JobMetric\Attribute\Models\Attribute as AttributeModel;
+use JobMetric\Attribute\Models\AttributeValue as AttributeValueModel;
 use JobMetric\PackageCore\Exceptions\AssetFolderNotFoundException;
 use JobMetric\PackageCore\Exceptions\MigrationFolderNotFoundException;
 use JobMetric\PackageCore\Exceptions\ViewFolderNotFoundException;
@@ -40,5 +41,6 @@ class AttributeServiceProvider extends PackageCoreServiceProvider
     {
         // Register model binding
         Route::model('jm_attribute', AttributeModel::class);
+        Route::model('jm_attribute_value', AttributeValueModel::class);
     }
 }
