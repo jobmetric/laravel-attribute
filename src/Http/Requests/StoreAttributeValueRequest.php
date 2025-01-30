@@ -4,16 +4,16 @@ namespace JobMetric\Attribute\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use JobMetric\Attribute\Enums\AttributeTypeEnum;
-use JobMetric\Attribute\Models\Attribute;
-use JobMetric\Translation\Http\Requests\MultiTranslationArrayRequest;
+use JobMetric\Attribute\Models\AttributeValue;
+use JobMetric\Translation\Http\Requests\TranslationArrayRequest;
+use Throwable;
 
-class UpdateAttributeRequest extends FormRequest
+class StoreAttributeValueRequest extends FormRequest
 {
-    use MultiTranslationArrayRequest;
+    use TranslationArrayRequest;
 
-    public string|null $type = null;
     public int|null $attribute_id = null;
+    public array $data = [];
 
     /**
      * Determine if the user is authorized to make this request.
@@ -27,6 +27,7 @@ class UpdateAttributeRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array|string>
+     * @throws Throwable
      */
     public function rules(): array
     {
@@ -36,14 +37,15 @@ class UpdateAttributeRequest extends FormRequest
             $attribute_id = $this->attribute_id;
         }
 
+        if (!empty(request()->all())) {
+            $this->data = request()->all();
+        }
+
         $rules = [
-            'type' => 'required|string|in:' . implode(',', AttributeTypeEnum::values()),
-            'is_special' => 'boolean|sometimes',
-            'is_filter' => 'boolean|sometimes',
             'ordering' => 'numeric|sometimes',
         ];
 
-        $this->renderMultiTranslationFiled($rules, Attribute::class, object_id: $attribute_id);
+        $this->renderTranslationFiled($rules, $this->data, AttributeValue::class);
 
         return $rules;
     }
@@ -56,15 +58,28 @@ class UpdateAttributeRequest extends FormRequest
     public function attributes(): array
     {
         $params = [
-            'type' => trans('attribute::base.form.attribute.fields.type.title'),
-            'is_special' => trans('attribute::base.form.attribute.fields.is_special.title'),
-            'is_filter' => trans('attribute::base.form.attribute.fields.is_filter.title'),
-            'ordering' => trans('attribute::base.form.attribute.fields.ordering.title'),
+            'ordering' => trans('attribute::base.form.attribute_value.fields.ordering.title'),
         ];
 
-        $this->renderMultiTranslationAttribute($params, Attribute::class, 'attribute::base.form.attribute.fields.{field}.title');
+        $this->renderTranslationAttribute($params, $this->data, AttributeValue::class, 'attribute::base.form.attribute_value.fields.{field}.title');
 
         return $params;
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        if (!empty(request()->all())) {
+            $this->data = request()->all();
+        }
+
+        $this->merge([
+            'ordering' => $this->ordering ?? 0,
+        ]);
     }
 
     /**
@@ -76,6 +91,19 @@ class UpdateAttributeRequest extends FormRequest
     public function setAttributeId(int $attribute_id): static
     {
         $this->attribute_id = $attribute_id;
+
+        return $this;
+    }
+
+    /**
+     * Set data for validation
+     *
+     * @param array $data
+     * @return static
+     */
+    public function setData(array $data): static
+    {
+        $this->data = $data;
 
         return $this;
     }

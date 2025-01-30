@@ -6,10 +6,10 @@ use Exception;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use InvalidArgumentException;
-use JobMetric\Attribute\Models\Attribute;
+use JobMetric\Attribute\Models\AttributeValue;
 use JobMetric\Translation\Http\Requests\TranslationArrayRequest;
 
-class SetTranslationRequest extends FormRequest
+class SetTranslationAttributeValueRequest extends FormRequest
 {
     use TranslationArrayRequest;
 
@@ -44,14 +44,14 @@ class SetTranslationRequest extends FormRequest
             throw new InvalidArgumentException('Translatable ID is required', 400);
         }
 
-        Attribute::query()->findOrFail($id);
+        AttributeValue::query()->findOrFail($id);
 
         $rules = [
             'locale' => 'required|string',
-            'translatable_id' => 'required|integer|exists:attributes,id',
+            'translatable_id' => 'required|integer|exists:' . config('attribute.tables.attribute_value') . ',id',
         ];
 
-        $this->renderTranslationFiled($rules, $form_data, Attribute::class, object_id: $id);
+        $this->renderTranslationFiled($rules, $form_data, AttributeValue::class, object_id: $id);
 
         return $rules;
     }
@@ -66,7 +66,7 @@ class SetTranslationRequest extends FormRequest
         $form_data = request()->all();
 
         $params = [];
-        $this->renderTranslationAttribute($params, $form_data, Attribute::class, 'attribute::base.form.attribute.fields.{field}.title');
+        $this->renderTranslationAttribute($params, $form_data, AttributeValue::class, 'attribute::base.form.attribute_value.fields.{field}.title');
 
         return $params;
     }
