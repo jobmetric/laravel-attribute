@@ -24,17 +24,40 @@ return [
             "used_in"=> "This attribute is used in :count items.",
             "set_translation" => "Attribute translation set successfully.",
         ],
+        "attribute_value" => [
+            "created" => "Attribute value created successfully.",
+            "updated" => "Attribute value updated successfully.",
+            "deleted" => "Attribute value deleted successfully.",
+            "deleted_items" => "{1} One attribute value deleted successfully.|[2,*] :count attribute values deleted successfully.",
+            "used_in" => "This attribute value is used in :count items.",
+            "set_translation" => "Attribute value translation set successfully.",
+        ],
     ],
 
     "exceptions" => [
         "attribute_not_found" => "Attribute with number :number not found.",
         "attribute_used" => "Attribute :name is used.",
+        "attribute_value_not_found" => "Attribute value with number :number not found.",
+        "attribute_value_used" => "Attribute value :name is used.",
     ],
 
     "list" => [
         "attribute" => [
             "title" => "Attributes",
             "description" => "In this section, you can manage various attributes.",
+            "filters" => [
+                "name" => [
+                    "title" => "Name",
+                    "placeholder" => "Search by name",
+                ],
+            ],
+            "buttons" => [
+                "attribute_value_list" => "Attribute Values",
+            ],
+        ],
+        "attribute_value" => [
+            "title" => "Attribute Values :name",
+            "description" => "In this section, you can manage attribute values :name.",
             "filters" => [
                 "name" => [
                     "title" => "Name",
@@ -72,6 +95,27 @@ return [
                 ],
                 "is_special" => [
                     "title" => "Is Special",
+                ],
+            ]
+        ],
+        "attribute_value" => [
+            "create" => [
+                "title" => "Create Attribute Value for :name",
+                "description" => "In this section, you can create a new attribute value for :name.",
+            ],
+            "edit" => [
+                "title" => "Edit Attribute Value number :number for :name",
+                "description" => "In this section, you can edit attribute value number :number for :name.",
+            ],
+            "fields" => [
+                "name" => [
+                    "title" => "Name",
+                    "info" => "Attribute value name should not be repeated.",
+                    "placeholder" => "Enter the attribute value name.",
+                ],
+                "ordering" => [
+                    "title" => "Ordering",
+                    "placeholder" => "Enter the attribute value ordering.",
                 ],
             ]
         ]
