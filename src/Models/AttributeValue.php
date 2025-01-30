@@ -14,9 +14,11 @@ use JobMetric\Translation\HasTranslation;
  *
  * @property int $id
  * @property int $attribute_id
+ * @property int $ordering
  *
  * @property-read Attribute $attribute
  * @property-read BelongsToMany $attributeRelations
+ * @property mixed $translations
  *
  * @method AttributeValue find(int $int)
  */
@@ -27,6 +29,7 @@ class AttributeValue extends Model implements TranslationContract
 
     protected $fillable = [
         'attribute_id',
+        'ordering'
     ];
 
     /**
@@ -36,6 +39,7 @@ class AttributeValue extends Model implements TranslationContract
      */
     protected $casts = [
         'attribute_id' => 'integer',
+        'ordering' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
