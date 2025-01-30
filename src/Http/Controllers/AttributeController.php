@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use JobMetric\Attribute\Enums\AttributeTypeEnum;
 use JobMetric\Attribute\Facades\Attribute as AttributeFacade;
-use JobMetric\Attribute\Http\Requests\SetTranslationRequest;
+use JobMetric\Attribute\Http\Requests\SetTranslationAttributeRequest;
 use JobMetric\Attribute\Http\Requests\StoreAttributeRequest;
 use JobMetric\Attribute\Http\Requests\UpdateAttributeRequest;
 use JobMetric\Attribute\Http\Resources\AttributeResource;
@@ -30,11 +30,11 @@ class AttributeController extends Controller
             $parameters = request()->route()->parameters();
 
             $this->route = [
-                'index' => route('attribute.index', $parameters),
-                'create' => route('attribute.create', $parameters),
-                'store' => route('attribute.store', $parameters),
-                'options' => route('attribute.options', $parameters),
-                'set_translation' => route('attribute.set-translation', $parameters),
+                'index' => route('attributes.index', $parameters),
+                'create' => route('attributes.create', $parameters),
+                'store' => route('attributes.store', $parameters),
+                'options' => route('attributes.options', $parameters),
+                'set_translation' => route('attributes.set-translation', $parameters),
             ];
         }
     }
@@ -71,6 +71,11 @@ class AttributeController extends Controller
 
         DomiLocalize('attribute', [
             'route' => $this->route['index'],
+            'language' => [
+                'buttons' => [
+                    'attribute_value_list' => trans('attribute::base.list.attribute.buttons.attribute_value_list'),
+                ]
+            ]
         ]);
 
         DomiPlugins('jquery.form');
@@ -121,8 +126,6 @@ class AttributeController extends Controller
         Button::saveClose();
         Button::cancel($this->route['index']);
 
-        DomiScript('assets/vendor/attribute/js/attribute/form.js');
-
         $data['action'] = $this->route['store'];
         $data['translations'] = (new Attribute)->translationAllowFields();
         $data['types'] = AttributeTypeEnum::values();
@@ -158,10 +161,10 @@ class AttributeController extends Controller
             }
 
             // btn save
-            return redirect()->route('attribute.edit', [
+            return redirect()->route('attributes.edit', [
                 'panel' => $panel,
                 'section' => $section,
-                'jm_attribute' => $attribute['data']->id
+                'attribute' => $attribute['data']->id
             ]);
         }
 
@@ -206,12 +209,10 @@ class AttributeController extends Controller
         Button::saveClose();
         Button::cancel($this->route['index']);
 
-        DomiScript('assets/vendor/attribute/js/attribute/form.js');
-
-        $data['action'] = route('attribute.update', [
+        $data['action'] = route('attributes.update', [
             'panel' => $panel,
             'section' => $section,
-            'jm_attribute' => $attribute->id
+            'attribute' => $attribute->id
         ]);
 
         $data['attribute'] = $attribute;
@@ -252,10 +253,10 @@ class AttributeController extends Controller
             }
 
             // btn save
-            return redirect()->route('attribute.edit', [
+            return redirect()->route('attributes.edit', [
                 'panel' => $panel,
                 'section' => $section,
-                'jm_attribute' => $attribute['data']->id
+                'attribute' => $attribute['data']->id
             ]);
         }
 
@@ -295,12 +296,12 @@ class AttributeController extends Controller
     /**
      * Set Translation in list
      *
-     * @param SetTranslationRequest $request
+     * @param SetTranslationAttributeRequest $request
      *
      * @return JsonResponse
      * @throws Throwable
      */
-    public function setTranslation(SetTranslationRequest $request): JsonResponse
+    public function setTranslation(SetTranslationAttributeRequest $request): JsonResponse
     {
         try {
             return $this->response(
