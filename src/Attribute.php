@@ -207,13 +207,8 @@ class Attribute
                 $attribute->type = $data['type'];
             }
 
-            if (array_key_exists('is_special', $data)) {
-                $attribute->is_special = $data['is_special'];
-            }
-
-            if (array_key_exists('is_filter', $data)) {
-                $attribute->is_filter = $data['is_filter'];
-            }
+            $attribute->is_special = $data['is_special'] ?? false;
+            $attribute->is_filter = $data['is_filter'] ?? false;
 
             if (array_key_exists('ordering', $data)) {
                 $attribute->ordering = $data['ordering'];

@@ -12,7 +12,6 @@ use JobMetric\Translation\Models\Translation;
  * @property int $id
  * @property string $name
  * @property string $type
- * @property bool $is_gallery
  * @property bool $is_special
  * @property bool $is_filter
  * @property int $ordering
@@ -37,7 +36,6 @@ class AttributeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->whenHas('name', $this->name),
             'type' => $this->type,
-            'is_gallery' => $this->is_gallery,
             'is_special' => $this->is_special,
             'is_filter' => $this->is_filter,
             'ordering' => $this->ordering,

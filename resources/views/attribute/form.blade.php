@@ -66,11 +66,11 @@
 
                                 <div class="d-flex align-items-center gap-10">
                                     <div class="form-check form-check-custom form-check-solid form-check-sm">
-                                        <input type="checkbox" name="is_filter" class="form-check-input" value="" id="input-is-filter"/>
+                                        <input type="checkbox" name="is_filter" class="form-check-input" value="1" id="input-is-filter" @if($attribute->is_filter == '1') checked @endif/>
                                         <label class="form-check-label" for="input-is-filter">{{ trans('attribute::base.form.attribute.fields.is_filter.title') }}</label>
                                     </div>
                                     <div class="form-check form-check-custom form-check-solid form-check-sm">
-                                        <input type="checkbox" name="is_special" class="form-check-input" value="" id="input-is-special"/>
+                                        <input type="checkbox" name="is_special" class="form-check-input" value="1" id="input-is-special" @if($attribute->is_special == '1') checked @endif/>
                                         <label class="form-check-label" for="input-is-special">{{ trans('attribute::base.form.attribute.fields.is_special.title') }}</label>
                                     </div>
                                 </div>

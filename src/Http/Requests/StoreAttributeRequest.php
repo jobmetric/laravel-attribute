@@ -37,7 +37,6 @@ class StoreAttributeRequest extends FormRequest
 
         $rules = [
             'type' => 'required|string|in:' . implode(',', AttributeTypeEnum::values()),
-            'is_gallery' => 'boolean|sometimes',
             'is_special' => 'boolean|sometimes',
             'is_filter' => 'boolean|sometimes',
             'ordering' => 'numeric|sometimes',
@@ -57,7 +56,6 @@ class StoreAttributeRequest extends FormRequest
     {
         $params = [
             'type' => trans('attribute::base.form.attribute.fields.type.title'),
-            'is_gallery' => trans('attribute::base.form.attribute.fields.is_gallery.title'),
             'is_special' => trans('attribute::base.form.attribute.fields.is_special.title'),
             'is_filter' => trans('attribute::base.form.attribute.fields.is_filter.title'),
             'ordering' => trans('attribute::base.form.attribute.fields.ordering.title'),
@@ -80,7 +78,6 @@ class StoreAttributeRequest extends FormRequest
         }
 
         $this->merge([
-            'is_gallery' => $this->is_gallery ?? false,
             'is_special' => $this->is_special ?? false,
             'is_filter' => $this->is_filter ?? false,
             'ordering' => $this->ordering ?? 0,
