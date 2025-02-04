@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use JobMetric\Attribute\Events\GalleryableResourceEvent;
 
 /**
  * JobMetric\Attribute\Models\GalleryVariation
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $galleryable_type
  * @property int $galleryable_id
  * @property Carbon|null $created_at
+ * @property mixed $galleryable_resource
  *
  * @property-read Model $galleryable
  * @property-read Collection|GalleryVariationAttributeValue[] $galleryVariationAttributeValues
@@ -68,5 +70,16 @@ class GalleryVariation extends Model
     public function galleryVariationAttributeValues(): HasMany
     {
         return $this->hasMany(GalleryVariationAttributeValue::class, 'gallery_variation_id');
+    }
+
+    /**
+     * Get the galleryable resource attribute.
+     */
+    public function getGalleryableResourceAttribute()
+    {
+        $event = new GalleryableResourceEvent($this->galleryable);
+        event($event);
+
+        return $event->resource;
     }
 }
