@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="mb-10">
                                     <label class="form-label">{{ trans('attribute::base.form.attribute.fields.ordering.title') }}</label>
-                                    <input type="number" name="ordering" class="form-control mb-2" placeholder="{{ trans('attribute::base.form.attribute.fields.ordering.placeholder') }}" value="{{ old('type', $attribute->ordering ?? null) }}">
+                                    <input type="number" name="ordering" class="form-control mb-2" placeholder="{{ trans('attribute::base.form.attribute.fields.ordering.placeholder') }}" value="{{ old('ordering', $attribute->ordering ?? null) }}">
                                     @error('ordering')
                                         <div class="form-errors text-danger fs-7 mt-2">{{ $message }}</div>
                                     @enderror
