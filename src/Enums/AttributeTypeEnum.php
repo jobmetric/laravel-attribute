@@ -2,7 +2,7 @@
 
 namespace JobMetric\Attribute\Enums;
 
-use JobMetric\PackageCore\Enums\EnumToArray;
+use JobMetric\PackageCore\Enums\EnumMacros;
 
 /**
  * @method static RADIO()
@@ -15,7 +15,7 @@ use JobMetric\PackageCore\Enums\EnumToArray;
  */
 enum AttributeTypeEnum: string
 {
-    use EnumToArray;
+    use EnumMacros;
 
     case RADIO = "radio";
     case CHECKBOX = "checkbox";
