@@ -2,14 +2,12 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -18,32 +16,48 @@ return new class extends Migration {
 
             $table->morphs('attributable');
             /**
-             * relatable to:
+             * Entity this attribute is attached to (polymorphic parent).
              *
-             * ProductInterface
-             * Post
+             * - attributable_type: fully qualified model class name
+             * - attributable_id: primary key of that model
+             * - examples: product interfaces, posts, or any model that uses the attribute system
              */
 
-            $table->foreignId('attribute_id')->index()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('attribute_id')
+                ->index()
+                ->constrained(config('attribute.tables.attribute'))
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            /**
+             * Which attribute definition is linked to the attributable entity.
+             */
 
             $table->boolean('is_variant')->default(false)->index();
             /**
-             * note: When active, the attribute can participate in variable / variant logic (e.g. variable product).
+             * When true, this link participates in variant / variable logic (e.g. variable products).
+             *
+             * - business rules live in the domain layer; this flag is for storage and queries
              */
 
             $table->boolean('is_special')->default(false)->index();
             /**
-             * note: If this option is active in the attribute table, it is active here by default and cannot be changed
+             * Mirrors the attribute’s special flag for this relation.
+             *
+             * - typically copied from attributes.is_special when the relation is created
+             * - kept on the relation for faster reads without joining attributes
              */
 
-            $table->dateTime('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->nullable()->useCurrent();
+            /**
+             * When the relation row was created (no updated_at on this model).
+             *
+             * - useCurrent() keeps behaviour portable across drivers (avoids raw SQL)
+             */
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {
