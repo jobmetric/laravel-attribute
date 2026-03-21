@@ -165,7 +165,7 @@ class Attribute
             return [
                 'ok' => true,
                 'message' => trans('attribute::base.messages.attribute.created'),
-                'data' => AttributeResource::make($attribute),
+                'data' => AttributeResource::make($attribute->loadMissing('translations')),
                 'status' => 201
             ];
         });
@@ -223,7 +223,7 @@ class Attribute
             return [
                 'ok' => true,
                 'message' => trans('attribute::base.messages.attribute.updated'),
-                'data' => AttributeResource::make($attribute),
+                'data' => AttributeResource::make($attribute->loadMissing('translations')),
                 'status' => 200
             ];
         });
@@ -245,7 +245,7 @@ class Attribute
             throw new AttributeNotFoundException($attribute_id);
         }
 
-        $data = AttributeResource::make($attribute);
+        $data = AttributeResource::make($attribute->loadMissing('translations'));
 
         return DB::transaction(function () use ($attribute_id, $attribute, $data) {
             if ($this->hasUsed($attribute_id)) {

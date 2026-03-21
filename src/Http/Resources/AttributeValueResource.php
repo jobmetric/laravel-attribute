@@ -2,29 +2,35 @@
 
 namespace JobMetric\Attribute\Http\Resources;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 use JobMetric\Attribute\Models\Attribute;
 use JobMetric\Attribute\Models\AttributeRelation;
 use JobMetric\Translation\Models\Translation;
 
 /**
+ * Class AttributeValueResource
+ *
+ * Transforms the AttributeValue model into a structured JSON resource.
+ *
  * @property int $id
- * @property string $name
+ * @property string|null $name
  * @property int $attribute_id
  * @property int $ordering
- * @property mixed $created_at
- * @property mixed $updated_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  *
- * @property Translation[] $translations
- * @property Attribute $attribute
- * @property AttributeRelation[] $attributeRelations
+ * @property-read Translation[] $translations
+ * @property-read Attribute $attribute
+ * @property-read AttributeRelation[] $attributeRelations
  */
 class AttributeValueResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
+     *
+     * @param Request $request
      *
      * @return array<string, mixed>
      */
@@ -33,21 +39,25 @@ class AttributeValueResource extends JsonResource
         global $translationLocale;
 
         return [
-            'id' => $this->id,
-            'name' => $this->whenHas('name', $this->name),
-            'ordering' => $this->ordering,
-            'created_at' => Carbon::make($this->created_at)->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::make($this->updated_at)->format('Y-m-d H:i:s'),
+            'id'           => $this->id,
+            'name'         => $this->whenHas('name', $this->name),
+            'attribute_id' => $this->attribute_id,
+            'ordering'     => $this->ordering,
 
-            'translations' => translationResourceData($this->translations, $translationLocale),
+            'created_at' => $this->created_at?->toISOString(),
+            'updated_at' => $this->updated_at?->toISOString(),
 
-            'attribute' => $this->whenLoaded('attribute', function () {
-                return AttributeResource::collection($this->attribute);
+            'translations' => $this->whenLoaded('translations', function () use ($translationLocale) {
+                return translationResourceData($this->translations, $translationLocale);
             }),
 
-            /*'attributeRelations' => $this->whenLoaded('attributeRelations', function () {
+            'attribute' => $this->whenLoaded('attribute', function () {
+                return AttributeResource::make($this->attribute);
+            }),
+
+            'attribute_relations' => $this->whenLoaded('attributeRelations', function () {
                 return AttributeRelationResource::collection($this->attributeRelations);
-            }),*/
+            }),
         ];
     }
 }
