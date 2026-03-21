@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use JobMetric\Translation\Contracts\TranslationContract;
 use JobMetric\Translation\HasTranslation;
 
 /**
@@ -29,7 +28,7 @@ use JobMetric\Translation\HasTranslation;
  *
  * @method Attribute find(int $int)
  */
-class Attribute extends Model implements TranslationContract
+class Attribute extends Model
 {
     use HasFactory,
         HasTranslation;
@@ -60,17 +59,9 @@ class Attribute extends Model implements TranslationContract
         return config('attribute.tables.attribute', parent::getTable());
     }
 
-    /**
-     * translation allow fields.
-     *
-     * @return array
-     */
-    public function translationAllowFields(): array
-    {
-        return [
-            'name'
-        ];
-    }
+    protected array $translatables = [
+        'name'
+    ];
 
     /**
      * attributeValues relation

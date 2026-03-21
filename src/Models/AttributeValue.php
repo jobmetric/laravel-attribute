@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use JobMetric\Translation\Contracts\TranslationContract;
 use JobMetric\Translation\HasTranslation;
 
 /**
@@ -22,7 +21,7 @@ use JobMetric\Translation\HasTranslation;
  *
  * @method AttributeValue find(int $int)
  */
-class AttributeValue extends Model implements TranslationContract
+class AttributeValue extends Model
 {
     use HasFactory,
         HasTranslation;
@@ -49,17 +48,9 @@ class AttributeValue extends Model implements TranslationContract
         return config('attribute.tables.attribute_value', parent::getTable());
     }
 
-    /**
-     * translation allow fields.
-     *
-     * @return array
-     */
-    public function translationAllowFields(): array
-    {
-        return [
-            'name'
-        ];
-    }
+    protected array $translatables = [
+        'name'
+    ];
 
     /**
      * attribute relation
