@@ -21,12 +21,12 @@ class AttributeValueFactory extends Factory
     {
         return [
             'attribute_id' => null,
-            'ordering' => 0,
+            'ordering'     => $this->faker->numberBetween(0, 50),
         ];
     }
 
     /**
-     * set attribute_id
+     * Set the associated attribute ID for this attribute value, linking it to a specific attribute.
      *
      * @param int $attributeId
      *
@@ -34,13 +34,14 @@ class AttributeValueFactory extends Factory
      */
     public function setAttributeId(int $attributeId): static
     {
-        return $this->state(fn(array $attributes) => [
-            'attribute_id' => $attributeId
+        return $this->state(fn (array $attributes) => [
+            'attribute_id' => $attributeId,
         ]);
     }
 
     /**
-     * set ordering
+     * Set the ordering value for this attribute value, which can be used to determine display order among sibling
+     * values.
      *
      * @param int $ordering
      *
@@ -48,8 +49,8 @@ class AttributeValueFactory extends Factory
      */
     public function setOrdering(int $ordering): static
     {
-        return $this->state(fn(array $attributes) => [
-            'ordering' => $ordering
+        return $this->state(fn (array $attributes) => [
+            'ordering' => $ordering,
         ]);
     }
 }

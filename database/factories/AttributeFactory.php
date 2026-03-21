@@ -10,6 +10,21 @@ use JobMetric\Attribute\Models\Attribute;
  */
 class AttributeFactory extends Factory
 {
+    /**
+     * Default type keys aligned with package config attribute.types (registry defaults).
+     *
+     * @var list<string>
+     */
+    private const DEFAULT_TYPES = [
+        'radio',
+        'checkbox',
+        'select',
+        'color',
+        'card',
+        'image',
+        'input',
+    ];
+
     protected $model = Attribute::class;
 
     /**
@@ -20,29 +35,29 @@ class AttributeFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => null,
-            'is_special' => false,
-            'is_filter' => false,
-            'ordering' => 0,
+            'type'       => $this->faker->randomElement(self::DEFAULT_TYPES),
+            'is_special' => $this->faker->boolean(25),
+            'is_filter'  => $this->faker->boolean(35),
+            'ordering'   => $this->faker->numberBetween(0, 100),
         ];
     }
 
     /**
-     * set type
+     * Set the attribute type, which should correspond to a registered type in the package configuration.
      *
-     * @param string $type
+     * @param string $type AttributeTypeRegistry / config key
      *
      * @return static
      */
     public function setType(string $type): static
     {
-        return $this->state(fn(array $attributes) => [
-            'type' => $type
+        return $this->state(fn (array $attributes) => [
+            'type' => $type,
         ]);
     }
 
     /**
-     * set is_special
+     * Set whether the attribute is considered special (e.g., highlighted in UI).
      *
      * @param bool $isSpecial
      *
@@ -50,13 +65,13 @@ class AttributeFactory extends Factory
      */
     public function setIsSpecial(bool $isSpecial): static
     {
-        return $this->state(fn(array $attributes) => [
-            'is_special' => $isSpecial
+        return $this->state(fn (array $attributes) => [
+            'is_special' => $isSpecial,
         ]);
     }
 
     /**
-     * set is_filter
+     * Set whether the attribute should be used as a filter in listings.
      *
      * @param bool $isFilter
      *
@@ -64,13 +79,13 @@ class AttributeFactory extends Factory
      */
     public function setIsFilter(bool $isFilter): static
     {
-        return $this->state(fn(array $attributes) => [
-            'is_filter' => $isFilter
+        return $this->state(fn (array $attributes) => [
+            'is_filter' => $isFilter,
         ]);
     }
 
     /**
-     * set ordering
+     * Set the ordering value for the attribute.
      *
      * @param int $ordering
      *
@@ -78,8 +93,8 @@ class AttributeFactory extends Factory
      */
     public function setOrdering(int $ordering): static
     {
-        return $this->state(fn(array $attributes) => [
-            'ordering' => $ordering
+        return $this->state(fn (array $attributes) => [
+            'ordering' => $ordering,
         ]);
     }
 }

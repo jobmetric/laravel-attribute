@@ -3,6 +3,7 @@
 namespace JobMetric\Attribute\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 use JobMetric\Attribute\Models\AttributeRelation;
 
 /**
@@ -21,31 +22,31 @@ class AttributeRelationFactory extends Factory
     {
         return [
             'attributable_type' => null,
-            'attributable_id' => null,
-            'attribute_id' => null,
-            'is_variant' => $this->faker->boolean,
-            'is_special' => $this->faker->boolean,
+            'attributable_id'   => null,
+            'attribute_id'      => null,
+            'is_variant'        => $this->faker->boolean(30),
+            'is_special'        => $this->faker->boolean(20),
         ];
     }
 
     /**
-     * set attributable
+     * Set the attributable model type and ID for this attribute relation.
      *
-     * @param string $attributableType
-     * @param string $attributableId
+     * @param class-string<Model>|string $attributableType Morph class or alias
+     * @param int|string $attributableId
      *
      * @return static
      */
-    public function setAttributable(string $attributableType, string $attributableId): static
+    public function setAttributable(string $attributableType, int|string $attributableId): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'attributable_type' => $attributableType,
-            'attributable_id' => $attributableId
+            'attributable_id'   => $attributableId,
         ]);
     }
 
     /**
-     * set attribute_id
+     * Set the associated attribute ID for this relation.
      *
      * @param int $attributeId
      *
@@ -53,13 +54,13 @@ class AttributeRelationFactory extends Factory
      */
     public function setAttributeId(int $attributeId): static
     {
-        return $this->state(fn(array $attributes) => [
-            'attribute_id' => $attributeId
+        return $this->state(fn (array $attributes) => [
+            'attribute_id' => $attributeId,
         ]);
     }
 
     /**
-     * set is_variant
+     * Set whether this attribute relation is considered a variant (e.g., used for product variants).
      *
      * @param bool $isVariant
      *
@@ -67,13 +68,13 @@ class AttributeRelationFactory extends Factory
      */
     public function setIsVariant(bool $isVariant): static
     {
-        return $this->state(fn(array $attributes) => [
-            'is_variant' => $isVariant
+        return $this->state(fn (array $attributes) => [
+            'is_variant' => $isVariant,
         ]);
     }
 
     /**
-     * set is_special
+     * Set whether this attribute relation is considered special (e.g., highlighted in UI).
      *
      * @param bool $isSpecial
      *
@@ -81,8 +82,8 @@ class AttributeRelationFactory extends Factory
      */
     public function setIsSpecial(bool $isSpecial): static
     {
-        return $this->state(fn(array $attributes) => [
-            'is_special' => $isSpecial
+        return $this->state(fn (array $attributes) => [
+            'is_special' => $isSpecial,
         ]);
     }
 }

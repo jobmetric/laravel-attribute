@@ -21,35 +21,35 @@ class AttributeRelationValueFactory extends Factory
     {
         return [
             'attribute_relation_id' => null,
-            'attribute_value_id' => null,
+            'attribute_value_id'    => null,
         ];
     }
 
     /**
-     * set attribute_relation_id
+     * Set the associated attribute relation ID for this relation value.
      *
-     * @param int $attribute_relation_id
+     * @param int $attributeRelationId
      *
      * @return static
      */
-    public function attributeRelationId(int $attribute_relation_id): static
+    public function setAttributeRelationId(int $attributeRelationId): static
     {
-        return $this->state(fn() => [
-            'attribute_relation_id' => $attribute_relation_id,
+        return $this->state(fn (array $attributes) => [
+            'attribute_relation_id' => $attributeRelationId,
         ]);
     }
 
     /**
-     * set attribute_value_id
+     * Set the associated attribute value ID for this relation value.
      *
-     * @param int $attribute_value_id
+     * @param int $attributeValueId
      *
      * @return static
      */
-    public function attributeValueId(int $attribute_value_id): static
+    public function setAttributeValueId(int $attributeValueId): static
     {
-        return $this->state(fn() => [
-            'attribute_value_id' => $attribute_value_id,
+        return $this->state(fn (array $attributes) => [
+            'attribute_value_id' => $attributeValueId,
         ]);
     }
 }
