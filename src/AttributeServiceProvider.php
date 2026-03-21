@@ -8,7 +8,6 @@ use JobMetric\Attribute\Models\Attribute as AttributeModel;
 use JobMetric\Attribute\Models\AttributeValue as AttributeValueModel;
 use JobMetric\Attribute\Support\AttributeTypeRegistry;
 use JobMetric\PackageCore\Enums\RegisterClassTypeEnum;
-use JobMetric\PackageCore\Exceptions\AssetFolderNotFoundException;
 use JobMetric\PackageCore\Exceptions\MigrationFolderNotFoundException;
 use JobMetric\PackageCore\Exceptions\RegisterClassTypeNotFoundException;
 use JobMetric\PackageCore\Exceptions\ViewFolderNotFoundException;
@@ -23,16 +22,13 @@ class AttributeServiceProvider extends PackageCoreServiceProvider
      * @return void
      * @throws MigrationFolderNotFoundException
      * @throws ViewFolderNotFoundException
-     * @throws AssetFolderNotFoundException
      * @throws RegisterClassTypeNotFoundException
      */
     public function configuration(PackageCore $package): void
     {
         $package->name('laravel-attribute')
             ->hasConfig()
-            ->hasAsset()
             ->hasMigration()
-            ->hasRoute()
             ->hasView()
             ->hasTranslation()
             ->registerClass('AttributeTypeRegistry', AttributeTypeRegistry::class, RegisterClassTypeEnum::SINGLETON());
