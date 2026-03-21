@@ -131,6 +131,37 @@ return [
             "image" => "Image",
             "input" => "Input",
         ]
-    ]
+    ],
+
+    "types" => [
+        "radio" => [
+            "name" => "Radio",
+            "description" => "Single choice from a list of values.",
+        ],
+        "checkbox" => [
+            "name" => "Checkbox",
+            "description" => "One or more values can be selected.",
+        ],
+        "select" => [
+            "name" => "Select",
+            "description" => "Dropdown selection of a single value.",
+        ],
+        "color" => [
+            "name" => "Color",
+            "description" => "Color value for the attribute.",
+        ],
+        "card" => [
+            "name" => "Card",
+            "description" => "Card-style presentation of values.",
+        ],
+        "image" => [
+            "name" => "Image",
+            "description" => "Image-based attribute value.",
+        ],
+        "input" => [
+            "name" => "Input",
+            "description" => "Free-form text or number input.",
+        ],
+    ],
 
 ];
