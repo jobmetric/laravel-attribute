@@ -121,18 +121,6 @@ return [
         ]
     ],
 
-    "enums" => [
-        "attribute_type" => [
-            "radio" => "Radio",
-            "checkbox" => "Checkbox",
-            "select" => "Select",
-            "color" => "Color",
-            "card" => "Card",
-            "image" => "Image",
-            "input" => "Input",
-        ]
-    ],
-
     "types" => [
         "radio" => [
             "name" => "Radio",

@@ -4,7 +4,8 @@ namespace JobMetric\Attribute\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use JobMetric\Attribute\Enums\AttributeTypeEnum;
+use Illuminate\Validation\Rule;
+use JobMetric\Attribute\Facades\AttributeTypeRegistry;
 use JobMetric\Attribute\Models\Attribute;
 use JobMetric\Translation\Http\Requests\TranslationArrayRequest;
 use Throwable;
@@ -36,7 +37,7 @@ class StoreAttributeRequest extends FormRequest
         }
 
         $rules = [
-            'type' => 'required|string|in:' . implode(',', AttributeTypeEnum::values()),
+            'type' => ['required', 'string', Rule::in(AttributeTypeRegistry::values())],
             'is_special' => 'boolean|sometimes',
             'is_filter' => 'boolean|sometimes',
             'ordering' => 'numeric|sometimes',

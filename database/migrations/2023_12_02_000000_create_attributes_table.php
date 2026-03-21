@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use JobMetric\Attribute\Enums\AttributeTypeEnum;
 
 return new class extends Migration {
     /**
@@ -18,8 +17,7 @@ return new class extends Migration {
 
             $table->string('type');
             /**
-             * value: radio, checkbox, select, color, card, image, input
-             * use: @extends AttributeTypeEnum
+             * value: keys from config attribute.types / AttributeTypeRegistry
              */
 
             $table->boolean('is_special')->default(false)->index();

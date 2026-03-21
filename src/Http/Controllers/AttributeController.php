@@ -5,8 +5,8 @@ namespace JobMetric\Attribute\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use JobMetric\Attribute\Enums\AttributeTypeEnum;
 use JobMetric\Attribute\Facades\Attribute as AttributeFacade;
+use JobMetric\Attribute\Facades\AttributeTypeRegistry;
 use JobMetric\Attribute\Http\Requests\SetTranslationAttributeRequest;
 use JobMetric\Attribute\Http\Requests\StoreAttributeRequest;
 use JobMetric\Attribute\Http\Requests\UpdateAttributeRequest;
@@ -128,7 +128,7 @@ class AttributeController extends Controller
 
         $data['action'] = $this->route['store'];
         $data['translations'] = (new Attribute)->translationAllowFields();
-        $data['types'] = AttributeTypeEnum::values();
+        $data['types'] = AttributeTypeRegistry::values();
 
         return view('attribute::attribute.form', $data);
     }
@@ -218,7 +218,7 @@ class AttributeController extends Controller
         $data['attribute'] = $attribute;
         $data['languages'] = Language::all();
         $data['translations'] = (new Attribute)->translationAllowFields();
-        $data['types'] = AttributeTypeEnum::values();
+        $data['types'] = AttributeTypeRegistry::values();
         $data['translation_edit_values'] = translationResourceData($attribute->translations);
 
         return view('attribute::attribute.form', $data);

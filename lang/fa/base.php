@@ -121,18 +121,6 @@ return [
         ]
     ],
 
-    "enums" => [
-        "attribute_type" => [
-            "radio" => "رادیو",
-            "checkbox" => "چک‌باکس",
-            "select" => "انتخابی",
-            "color" => "رنگ",
-            "card" => "کارت",
-            "image" => "تصویر",
-            "input" => "ورودی",
-        ]
-    ],
-
     "types" => [
         "radio" => [
             "name" => "رادیو",
