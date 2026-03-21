@@ -17,10 +17,8 @@ use JobMetric\Attribute\Events\AttributableResourceEvent;
  * @property string $attributable_type
  * @property int $attributable_id
  * @property int $attribute_id
- * @property bool $is_coding
- * @property bool $is_gallery
+ * @property bool $is_variant
  * @property bool $is_special
- * @property bool $is_filter
  * @property Carbon $created_at
  *
  * @property-read Model $attributable
@@ -40,10 +38,8 @@ class AttributeRelation extends Model
         'attributable_type',
         'attributable_id',
         'attribute_id',
-        'is_coding',
-        'is_gallery',
+        'is_variant',
         'is_special',
-        'is_filter',
     ];
 
     /**
@@ -55,10 +51,8 @@ class AttributeRelation extends Model
         'attributable_type' => 'string',
         'attributable_id' => 'integer',
         'attribute_id' => 'integer',
-        'is_coding' => 'boolean',
-        'is_gallery' => 'boolean',
+        'is_variant' => 'boolean',
         'is_special' => 'boolean',
-        'is_filter' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];

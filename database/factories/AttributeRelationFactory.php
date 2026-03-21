@@ -23,10 +23,8 @@ class AttributeRelationFactory extends Factory
             'attributable_type' => null,
             'attributable_id' => null,
             'attribute_id' => null,
-            'is_coding' => $this->faker->boolean,
-            'is_gallery' => $this->faker->boolean,
+            'is_variant' => $this->faker->boolean,
             'is_special' => $this->faker->boolean,
-            'is_filter' => $this->faker->boolean,
         ];
     }
 
@@ -61,30 +59,16 @@ class AttributeRelationFactory extends Factory
     }
 
     /**
-     * set is_coding
+     * set is_variant
      *
-     * @param bool $isCoding
-     *
-     * @return static
-     */
-    public function setIsCoding(bool $isCoding): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'is_coding' => $isCoding
-        ]);
-    }
-
-    /**
-     * set is_gallery
-     *
-     * @param bool $isGallery
+     * @param bool $isVariant
      *
      * @return static
      */
-    public function setIsGallery(bool $isGallery): static
+    public function setIsVariant(bool $isVariant): static
     {
         return $this->state(fn(array $attributes) => [
-            'is_gallery' => $isGallery
+            'is_variant' => $isVariant
         ]);
     }
 
@@ -99,20 +83,6 @@ class AttributeRelationFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'is_special' => $isSpecial
-        ]);
-    }
-
-    /**
-     * set is_filter
-     *
-     * @param bool $isFilter
-     *
-     * @return static
-     */
-    public function setIsFilter(bool $isFilter): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'is_filter' => $isFilter
         ]);
     }
 }

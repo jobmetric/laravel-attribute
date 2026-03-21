@@ -12,10 +12,8 @@ use JobMetric\Attribute\Models\Attribute;
  * @property string $attributable_type
  * @property int $attributable_id
  * @property int $attribute_id
- * @property bool $is_coding
- * @property bool $is_gallery
+ * @property bool $is_variant
  * @property bool $is_special
- * @property bool $is_filter
  * @property Carbon $created_at
  *
  * @property Attribute $attribute
@@ -36,10 +34,8 @@ class AttributeRelationResource extends JsonResource
             'attributable_type' => $this->attributable_type,
             'attributable_id' => $this->attributable_id,
             'attribute_id' => $this->attribute_id,
-            'is_coding' => $this->is_coding,
-            'is_gallery' => $this->is_gallery,
+            'is_variant' => $this->is_variant,
             'is_special' => $this->is_special,
-            'is_filter' => $this->is_filter,
             'created_at' => Carbon::make($this->created_at)->format('Y-m-d H:i:s'),
 
             'attribute' => $this->whenLoaded('attribute', function () {
