@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
-use JobMetric\Attribute\Events\AttributableResourceEvent;
 use JobMetric\Attribute\Factories\AttributeRelationFactory;
+use JobMetric\PackageCore\Traits\HasMorphResourceAttributes;
 
 /**
  * Class AttributeRelation
@@ -32,7 +32,7 @@ use JobMetric\Attribute\Factories\AttributeRelationFactory;
  * @property-read Model|null $attributable
  * @property-read Attribute $attribute
  * @property-read BelongsToMany $attributeValues
- * @property-read mixed $attributable_resource Resolved via {@see AttributableResourceEvent}.
+ * @property-read mixed $attributable_resource
  *
  * @method static AttributeRelationFactory factory($count = null, $state = [])
  * @method static Builder|AttributeRelation query()
@@ -46,9 +46,18 @@ use JobMetric\Attribute\Factories\AttributeRelationFactory;
  */
 class AttributeRelation extends Model
 {
-    use HasFactory;
+    use HasFactory, HasMorphResourceAttributes;
 
     const UPDATED_AT = null;
+
+    /**
+     * MorphTo relations that expose a virtual "{name}_resource" attribute (see package-core trait).
+     *
+     * @var list<string>
+     */
+    protected array $resourceMorphRelations = [
+        'attributable',
+    ];
 
     /**
      * The relationships that should be touched when this model is updated, ensuring that the parent attributable's
@@ -135,17 +144,6 @@ class AttributeRelation extends Model
     public function attributeValues(): BelongsToMany
     {
         return $this->belongsToMany(AttributeValue::class, config('attribute.tables.attribute_relation_value'), 'attribute_relation_id', 'attribute_value_id');
-    }
-
-    /**
-     * API/resource representation of the attributable model (filled by listeners).
-     */
-    public function getAttributableResourceAttribute(): mixed
-    {
-        $event = new AttributableResourceEvent($this->attributable);
-        event($event);
-
-        return $event->resource;
     }
 
     /**

@@ -309,9 +309,10 @@ class Attribute
             throw new AttributeNotFoundException($attribute_id);
         }
 
-        $attribute_relations = AttributeRelation::query()->where([
-            'attribute_id' => $attribute_id
-        ])->get();
+        $attribute_relations = AttributeRelation::query()
+            ->where(['attribute_id' => $attribute_id])
+            ->with(['attributable', 'attribute'])
+            ->get();
 
         return [
             'ok' => true,

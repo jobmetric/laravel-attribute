@@ -30,19 +30,21 @@ class AttributeRelationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id'                => $this->id,
             'attributable_type' => $this->attributable_type,
-            'attributable_id' => $this->attributable_id,
-            'attribute_id' => $this->attribute_id,
-            'is_variant' => $this->is_variant,
-            'is_special' => $this->is_special,
-            'created_at' => Carbon::make($this->created_at)->format('Y-m-d H:i:s'),
+            'attributable_id'   => $this->attributable_id,
+            'attribute_id'      => $this->attribute_id,
+            'is_variant'        => $this->is_variant,
+            'is_special'        => $this->is_special,
+            'created_at'        => Carbon::make($this->created_at)->format('Y-m-d H:i:s'),
 
             'attribute' => $this->whenLoaded('attribute', function () {
                 return new AttributeResource($this->attribute);
             }),
 
-            'attributable' => $this?->attributable_resource
+            'attributable' => $this->whenLoaded('attributable', function () {
+                return $this->attributable_resource;
+            }),
         ];
     }
 }
