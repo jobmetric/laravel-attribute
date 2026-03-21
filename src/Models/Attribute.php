@@ -2,37 +2,56 @@
 
 namespace JobMetric\Attribute\Models;
 
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
+use JobMetric\Attribute\Factories\AttributeFactory;
 use JobMetric\Translation\HasTranslation;
 
 /**
- * JobMetric\Attribute\Models\Attribute
+ * Class Attribute
+ *
+ * Global attribute definition (type, flags, ordering). Translatable name is stored via
+ * the translation package. Values live in {@see AttributeValue}; entity links in
+ * {@see AttributeRelation}.
+ *
+ * @package JobMetric\Attribute
  *
  * @property int $id
- * @property string $type
+ * @property string $type AttributeTypeRegistry key (e.g. radio, select).
  * @property bool $is_special
  * @property bool $is_filter
  * @property int $ordering
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @property-read Collection|AttributeValue[] $attributeValues
+ * @property-read Collection<int, AttributeValue> $attributeValues
  * @property-read int|null $attribute_values_count
- * @property-read Collection|AttributeRelation[] $attributeRelations
+ * @property-read Collection<int, AttributeRelation> $attributeRelations
  * @property-read int|null $attribute_relations_count
  * @property-read mixed $translations
  *
- * @method Attribute find(int $int)
+ * @method static AttributeFactory factory($count = null, $state = [])
+ * @method static Builder|Attribute query()
+ * @method static Builder|Attribute whereType(string $type)
+ * @method static Builder|Attribute whereIsSpecial(bool $value = true)
+ * @method static Builder|Attribute whereIsFilter(bool $value = true)
+ * @method static Builder|Attribute whereOrdering(int|string $ordering)
+ * @method static Attribute|null find(mixed $id, array $columns = ['*'])
  */
 class Attribute extends Model
 {
-    use HasFactory,
-        HasTranslation;
+    use HasFactory;
+    use HasTranslation;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'type',
         'is_special',
@@ -41,30 +60,48 @@ class Attribute extends Model
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
-        'type' => 'string',
+        'type'       => 'string',
         'is_special' => 'boolean',
-        'is_filter' => 'boolean',
-        'ordering' => 'integer',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'is_filter'  => 'boolean',
+        'ordering'   => 'integer',
     ];
 
-    public function getTable()
+    /**
+     * The attributes that are translatable via the translation package.
+     *
+     * @var array<int, string>
+     */
+    protected array $translatables = [
+        'name',
+    ];
+
+    /**
+     * Override the default table name to allow configuration via package config. Falls back to parent table name if not set.
+     *
+     * @return string
+     */
+    public function getTable(): string
     {
         return config('attribute.tables.attribute', parent::getTable());
     }
 
-    protected array $translatables = [
-        'name'
-    ];
+    /**
+     * Create a new factory instance for the model, using the package's AttributeFactory.
+     *
+     * @return AttributeFactory
+     */
+    protected static function newFactory(): AttributeFactory
+    {
+        return AttributeFactory::new();
+    }
 
     /**
-     * attributeValues relation
+     * Values defined for this attribute (e.g. options for select/radio).
      *
      * @return HasMany
      */
@@ -74,9 +111,7 @@ class Attribute extends Model
     }
 
     /**
-     * attributeRelation relation
-     *
-     * @return HasMany
+     * Links attaching this attribute to attributable entities (polymorphic).
      */
     public function attributeRelations(): HasMany
     {
