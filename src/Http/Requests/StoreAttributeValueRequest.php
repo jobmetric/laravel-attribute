@@ -17,6 +17,8 @@ class StoreAttributeValueRequest extends FormRequest
 
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -33,11 +35,12 @@ class StoreAttributeValueRequest extends FormRequest
     {
         if (is_null($this->attribute_id)) {
             $attribute_id = $this->route()->parameter('attribute')->id;
-        } else {
+        }
+        else {
             $attribute_id = $this->attribute_id;
         }
 
-        if (!empty(request()->all())) {
+        if (! empty(request()->all())) {
             $this->data = request()->all();
         }
 
@@ -73,7 +76,7 @@ class StoreAttributeValueRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        if (!empty(request()->all())) {
+        if (! empty(request()->all())) {
             $this->data = request()->all();
         }
 
@@ -86,6 +89,7 @@ class StoreAttributeValueRequest extends FormRequest
      * Set attribute id for validation
      *
      * @param int $attribute_id
+     *
      * @return static
      */
     public function setAttributeId(int $attribute_id): static
@@ -99,6 +103,7 @@ class StoreAttributeValueRequest extends FormRequest
      * Set data for validation
      *
      * @param array $data
+     *
      * @return static
      */
     public function setData(array $data): static
@@ -106,5 +111,40 @@ class StoreAttributeValueRequest extends FormRequest
         $this->data = $data;
 
         return $this;
+    }
+
+    /**
+     * Normalize the given data before validation.
+     *
+     * @param array<string, mixed> $input
+     * @param array<string, mixed> $context
+     *
+     * @return array<string, mixed>
+     */
+    public static function normalize(array $input, array $context = []): array
+    {
+        return array_merge([
+            'ordering' => 0,
+        ], $input);
+    }
+
+    /**
+     * Validate the given data against the rules of this request.
+     *
+     * @param array<string, mixed> $input
+     * @param array<string, mixed> $context
+     *
+     * @return array<string, mixed>
+     * @throws Throwable
+     */
+    public static function rulesFor(array $input, array $context = []): array
+    {
+        $request = new self;
+        if (isset($context['attribute_id'])) {
+            $request->setAttributeId((int) $context['attribute_id']);
+        }
+        $request->setData($input);
+
+        return $request->rules();
     }
 }

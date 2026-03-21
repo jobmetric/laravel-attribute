@@ -168,10 +168,10 @@ class AttributeValueController extends Controller
     {
         $form_data = $request->all();
 
-        $attribute_value = AttributeValueFacade::store($attribute->id, $request->validated());
+        $result = AttributeValueFacade::storeForAttribute($attribute->id, $request->validated());
 
-        if ($attribute_value['ok']) {
-            $this->alert($attribute_value['message']);
+        if ($result->ok) {
+            $this->alert($result->message);
 
             if ($form_data['save'] == 'save.new') {
                 return back();
@@ -186,11 +186,11 @@ class AttributeValueController extends Controller
                 'panel' => $panel,
                 'section' => $section,
                 'attribute' => $attribute->id,
-                'value' => $attribute_value['data']->id
+                'value' => $result->data->id
             ]);
         }
 
-        $this->alert($attribute_value['message'], 'danger');
+        $this->alert($result->message, 'danger');
 
         return back();
     }
@@ -270,10 +270,10 @@ class AttributeValueController extends Controller
     {
         $form_data = $request->all();
 
-        $attribute_value = AttributeValueFacade::update($attribute->id, $value->id, $request->validated());
+        $result = AttributeValueFacade::updateForAttribute($attribute->id, $value->id, $request->validated());
 
-        if ($attribute_value['ok']) {
-            $this->alert($attribute_value['message']);
+        if ($result->ok) {
+            $this->alert($result->message);
 
             if ($form_data['save'] == 'save.new') {
                 return redirect()->to($this->route['create']);
@@ -288,11 +288,11 @@ class AttributeValueController extends Controller
                 'panel' => $panel,
                 'section' => $section,
                 'attribute' => $attribute->id,
-                'value' => $attribute_value['data']->id
+                'value' => $result->data->id
             ]);
         }
 
-        $this->alert($attribute_value['message'], 'danger');
+        $this->alert($result->message, 'danger');
 
         return back();
     }
@@ -336,9 +336,13 @@ class AttributeValueController extends Controller
     public function setTranslation(SetTranslationAttributeValueRequest $request): JsonResponse
     {
         try {
-            return $this->response(
-                AttributeValueFacade::setTranslation($request->validated())
-            );
+            $res = AttributeValueFacade::setTranslation($request->validated());
+
+            return $this->response([
+                'ok' => $res->ok,
+                'message' => $res->message,
+                'status' => $res->status,
+            ]);
         } catch (Throwable $exception) {
             return $this->response(message: $exception->getMessage(), status: $exception->getCode());
         }

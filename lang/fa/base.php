@@ -15,6 +15,11 @@ return [
     "validation" => [
     ],
 
+    "entity_names" => [
+        "attribute" => "ویژگی",
+        "attribute_value" => "مقدار ویژگی",
+    ],
+
     "messages" => [
         "attribute" => [
             "created" => "ویژگی با موفقیت ایجاد شد.",

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use JobMetric\Attribute\Facades\AttributeTypeRegistry as AttributeTypeRegistryFacade;
 use JobMetric\Attribute\Models\Attribute as AttributeModel;
 use JobMetric\Attribute\Models\AttributeValue as AttributeValueModel;
+use JobMetric\Attribute\Services\Attribute as AttributeService;
+use JobMetric\Attribute\Services\AttributeValue as AttributeValueService;
 use JobMetric\Attribute\Support\AttributeTypeRegistry;
 use JobMetric\PackageCore\Enums\RegisterClassTypeEnum;
 use JobMetric\PackageCore\Exceptions\MigrationFolderNotFoundException;
@@ -31,7 +33,9 @@ class AttributeServiceProvider extends PackageCoreServiceProvider
             ->hasMigration()
             ->hasView()
             ->hasTranslation()
-            ->registerClass('AttributeTypeRegistry', AttributeTypeRegistry::class, RegisterClassTypeEnum::SINGLETON());
+            ->registerClass('AttributeTypeRegistry', AttributeTypeRegistry::class, RegisterClassTypeEnum::SINGLETON())
+            ->registerClass('attribute', AttributeService::class, RegisterClassTypeEnum::SINGLETON())
+            ->registerClass('attribute_value', AttributeValueService::class, RegisterClassTypeEnum::SINGLETON());
     }
 
     /**

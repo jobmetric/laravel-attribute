@@ -147,10 +147,10 @@ class AttributeController extends Controller
     {
         $form_data = $request->all();
 
-        $attribute = AttributeFacade::store($request->validated());
+        $result = AttributeFacade::store($request->validated());
 
-        if ($attribute['ok']) {
-            $this->alert($attribute['message']);
+        if ($result->ok) {
+            $this->alert($result->message);
 
             if ($form_data['save'] == 'save.new') {
                 return back();
@@ -164,11 +164,11 @@ class AttributeController extends Controller
             return redirect()->route('attributes.edit', [
                 'panel' => $panel,
                 'section' => $section,
-                'attribute' => $attribute['data']->id
+                'attribute' => $result->data->id
             ]);
         }
 
-        $this->alert($attribute['message'], 'danger');
+        $this->alert($result->message, 'danger');
 
         return back();
     }
@@ -239,10 +239,10 @@ class AttributeController extends Controller
     {
         $form_data = $request->all();
 
-        $attribute = AttributeFacade::update($attribute->id, $request->validated());
+        $result = AttributeFacade::update($attribute->id, $request->validated());
 
-        if ($attribute['ok']) {
-            $this->alert($attribute['message']);
+        if ($result->ok) {
+            $this->alert($result->message);
 
             if ($form_data['save'] == 'save.new') {
                 return redirect()->to($this->route['create']);
@@ -256,11 +256,11 @@ class AttributeController extends Controller
             return redirect()->route('attributes.edit', [
                 'panel' => $panel,
                 'section' => $section,
-                'attribute' => $attribute['data']->id
+                'attribute' => $result->data->id
             ]);
         }
 
-        $this->alert($attribute['message'], 'danger');
+        $this->alert($result->message, 'danger');
 
         return back();
     }
@@ -304,9 +304,13 @@ class AttributeController extends Controller
     public function setTranslation(SetTranslationAttributeRequest $request): JsonResponse
     {
         try {
-            return $this->response(
-                AttributeFacade::setTranslation($request->validated())
-            );
+            $res = AttributeFacade::setTranslation($request->validated());
+
+            return $this->response([
+                'ok' => $res->ok,
+                'message' => $res->message,
+                'status' => $res->status,
+            ]);
         } catch (Throwable $exception) {
             return $this->response(message: $exception->getMessage(), status: $exception->getCode());
         }

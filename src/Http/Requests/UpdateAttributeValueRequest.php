@@ -5,6 +5,7 @@ namespace JobMetric\Attribute\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use JobMetric\Attribute\Models\AttributeValue;
+use JobMetric\Translation\Exceptions\ModelHasTranslationNotFoundException;
 use JobMetric\Translation\Http\Requests\MultiTranslationArrayRequest;
 
 class UpdateAttributeValueRequest extends FormRequest
@@ -17,6 +18,8 @@ class UpdateAttributeValueRequest extends FormRequest
 
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -27,18 +30,21 @@ class UpdateAttributeValueRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array|string>
+     * @throws ModelHasTranslationNotFoundException
      */
     public function rules(): array
     {
         if (is_null($this->attribute_id)) {
             $attribute_id = $this->route()->parameter('attribute')->id;
-        } else {
+        }
+        else {
             $attribute_id = $this->attribute_id;
         }
 
         if (is_null($this->attribute_value_id)) {
             $attribute_value_id = $this->route()->parameter('value')->id;
-        } else {
+        }
+        else {
             $attribute_value_id = $this->attribute_value_id;
         }
 
@@ -55,6 +61,7 @@ class UpdateAttributeValueRequest extends FormRequest
      * Get custom attributes for validator errors.
      *
      * @return array
+     * @throws ModelHasTranslationNotFoundException
      */
     public function attributes(): array
     {
@@ -71,6 +78,7 @@ class UpdateAttributeValueRequest extends FormRequest
      * Set attribute id for validation
      *
      * @param int $attribute_id
+     *
      * @return static
      */
     public function setAttributeId(int $attribute_id): static
@@ -84,6 +92,7 @@ class UpdateAttributeValueRequest extends FormRequest
      * Set attribute value id for validation
      *
      * @param int $attribute_value_id
+     *
      * @return static
      */
     public function setAttributeValueId(int $attribute_value_id): static
@@ -91,5 +100,25 @@ class UpdateAttributeValueRequest extends FormRequest
         $this->attribute_value_id = $attribute_value_id;
 
         return $this;
+    }
+
+    /**
+     * @param array<string, mixed> $input
+     * @param array<string, mixed> $context
+     *
+     * @return array<string, mixed>
+     * @throws ModelHasTranslationNotFoundException
+     */
+    public static function rulesFor(array $input, array $context = []): array
+    {
+        $request = new self;
+        if (isset($context['attribute_id'])) {
+            $request->setAttributeId((int) $context['attribute_id']);
+        }
+        if (isset($context['attribute_value_id'])) {
+            $request->setAttributeValueId((int) $context['attribute_value_id']);
+        }
+
+        return $request->rules();
     }
 }

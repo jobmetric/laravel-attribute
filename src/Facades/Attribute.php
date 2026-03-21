@@ -5,28 +5,32 @@ namespace JobMetric\Attribute\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \JobMetric\Attribute\Attribute
+ * @mixin \JobMetric\Attribute\Services\Attribute
  *
- * @method static \Spatie\QueryBuilder\QueryBuilder query(array $filter = [], array $with = [])
- * @method static \Illuminate\Http\Resources\Json\AnonymousResourceCollection paginate(array $filter = [], int $page_limit = 15, array $with = [])
- * @method static \Illuminate\Http\Resources\Json\AnonymousResourceCollection all(array $filter = [], array $with = [])
- * @method static array store(array $data)
- * @method static array update(int $attribute_id, array $data)
- * @method static array delete(int $attribute_id)
- * @method static string getName(int $attribute_id, string $locale = null)
- * @method static array usedIn(int $attribute_id)
+ * @method static \Spatie\QueryBuilder\QueryBuilder query(array $filters = [], array $with = [], string|null $mode = null)
+ * @method static \JobMetric\PackageCore\Output\Response paginate(int $pageLimit = 15, array $filters = [], array $with = [], string|null $mode = null)
+ * @method static \JobMetric\PackageCore\Output\Response all(array $filters = [], array $with = [], string|null $mode = null)
+ * @method static \JobMetric\PackageCore\Output\Response show(int $id, array $with = [], string|null $mode = null)
+ * @method static \JobMetric\PackageCore\Output\Response store(array $data, array $with = [])
+ * @method static \JobMetric\PackageCore\Output\Response update(int $id, array $data, array $with = [])
+ * @method static \JobMetric\PackageCore\Output\Response destroy(int $id, array $with = [])
+ * @method static \JobMetric\PackageCore\Output\Response delete(int $id, array $with = [])
+ * @method static string getName(int $attribute_id, string|null $locale = null)
+ * @method static \JobMetric\PackageCore\Output\Response usedIn(int $attribute_id)
  * @method static bool hasUsed(int $attribute_id)
- * @method static array setTranslation(array $data)
+ * @method static \JobMetric\PackageCore\Output\Response setTranslation(array $data)
  */
 class Attribute extends Facade
 {
     /**
-     * Get the registered name of the component.
+     * Get the registered name of the component in the service container.
+     *
+     * This accessor must match the binding defined in the package service provider.
      *
      * @return string
      */
     protected static function getFacadeAccessor(): string
     {
-        return \JobMetric\Attribute\Attribute::class;
+        return 'attribute';
     }
 }

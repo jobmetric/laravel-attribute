@@ -15,6 +15,11 @@ return [
     "validation" => [
     ],
 
+    "entity_names" => [
+        "attribute" => "Attribute",
+        "attribute_value" => "Attribute value",
+    ],
+
     "messages" => [
         "attribute"=> [
             "created" => "Attribute created successfully.",
