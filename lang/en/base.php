@@ -12,27 +12,18 @@ return [
     |
     */
 
-    "validation" => [
-    ],
-
     "entity_names" => [
         "attribute" => "Attribute",
         "attribute_value" => "Attribute value",
     ],
 
     "messages" => [
-        "attribute"=> [
-            "created" => "Attribute created successfully.",
-            "updated" => "Attribute updated successfully.",
-            "deleted" => "Attribute deleted successfully.",
+        "attribute" => [
             "deleted_items" => "{1} One attribute deleted successfully.|[2,*] :count attributes deleted successfully.",
-            "used_in"=> "This attribute is used in :count items.",
+            "used_in" => "This attribute is used in :count items.",
             "set_translation" => "Attribute translation set successfully.",
         ],
         "attribute_value" => [
-            "created" => "Attribute value created successfully.",
-            "updated" => "Attribute value updated successfully.",
-            "deleted" => "Attribute value deleted successfully.",
             "deleted_items" => "{1} One attribute value deleted successfully.|[2,*] :count attribute values deleted successfully.",
             "used_in" => "This attribute value is used in :count items.",
             "set_translation" => "Attribute value translation set successfully.",
