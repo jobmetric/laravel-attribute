@@ -3,6 +3,7 @@
 namespace JobMetric\Attribute\Services;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use JobMetric\Attribute\Events\Attribute\AttributeDeleteEvent;
 use JobMetric\Attribute\Events\Attribute\AttributeStoreEvent;
@@ -208,7 +209,8 @@ class Attribute extends AbstractCrudService
      * @param Model $model
      *
      * @return void
-     * @throws Throwable
+     * @throws AttributeNotFoundException
+     * @throws AttributeUsedException
      */
     protected function beforeDestroy(Model $model): void
     {
@@ -220,8 +222,23 @@ class Attribute extends AbstractCrudService
     }
 
     /**
-     * Override base CRUD methods to inject default eager loads for mutation responses.
+     * @param int $id
+     * @param array<int, string> $with
+     * @param string|null $mode
      *
+     * @return Response
+     * @throws AttributeNotFoundException
+     */
+    public function show(int $id, array $with = [], ?string $mode = null): Response
+    {
+        try {
+            return parent::show($id, $with, $mode);
+        } catch (ModelNotFoundException $e) {
+            throw new AttributeNotFoundException($id, previous: $e);
+        }
+    }
+
+    /**
      * @param array<string, mixed> $data
      * @param array<int, string> $with
      *
@@ -234,8 +251,6 @@ class Attribute extends AbstractCrudService
     }
 
     /**
-     * Override base CRUD methods to inject default eager loads for mutation responses.
-     *
      * @param int $id
      * @param array<string, mixed> $data
      * @param array<int, string> $with
@@ -245,12 +260,14 @@ class Attribute extends AbstractCrudService
      */
     public function update(int $id, array $data, array $with = []): Response
     {
-        return parent::update($id, $data, $this->mutationWith($with));
+        try {
+            return parent::update($id, $data, $this->mutationWith($with));
+        } catch (ModelNotFoundException $e) {
+            throw new AttributeNotFoundException($id, previous: $e);
+        }
     }
 
     /**
-     * Override base CRUD methods to inject default eager loads for mutation responses.
-     *
      * @param int $id
      * @param array<int, string> $with
      *
@@ -259,7 +276,11 @@ class Attribute extends AbstractCrudService
      */
     public function destroy(int $id, array $with = []): Response
     {
-        return parent::destroy($id, $this->mutationWith($with));
+        try {
+            return parent::destroy($id, $this->mutationWith($with));
+        } catch (ModelNotFoundException $e) {
+            throw new AttributeNotFoundException($id, previous: $e);
+        }
     }
 
     /**
@@ -363,7 +384,11 @@ class Attribute extends AbstractCrudService
         $validated = dto($data, SetTranslationAttributeRequest::class);
 
         return DB::transaction(function () use ($validated) {
-            $attribute = AttributeModel::query()->findOrFail($validated['translatable_id']);
+            try {
+                $attribute = AttributeModel::query()->findOrFail($validated['translatable_id']);
+            } catch (ModelNotFoundException $e) {
+                throw new AttributeNotFoundException((int) $validated['translatable_id'], previous: $e);
+            }
 
             foreach ($validated['translation'] as $locale => $translation_data) {
                 foreach ($translation_data as $translation_key => $translation_value) {

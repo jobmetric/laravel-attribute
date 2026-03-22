@@ -35,6 +35,7 @@ return [
         "attribute_used" => "Attribute :name is used.",
         "attribute_value_not_found" => "Attribute value with number :number not found.",
         "attribute_value_used" => "Attribute value :name is used.",
+        "attribute_value_attribute_mismatch" => "Attribute value :value_number does not belong to attribute :attribute_number.",
     ],
 
     "list" => [

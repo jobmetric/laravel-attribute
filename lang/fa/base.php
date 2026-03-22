@@ -35,6 +35,7 @@ return [
         "attribute_used" => "ویژگی :name استفاده شده است.",
         "attribute_value_not_found" => "مقدار ویژگی با شماره :number یافت نشد.",
         "attribute_value_used" => "مقدار ویژگی :name استفاده شده است.",
+        "attribute_value_attribute_mismatch" => "مقدار ویژگی :value_number متعلق به ویژگی :attribute_number نیست.",
     ],
 
     "list" => [

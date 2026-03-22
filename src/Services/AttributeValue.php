@@ -3,12 +3,14 @@
 namespace JobMetric\Attribute\Services;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use JobMetric\Attribute\Events\AttributeValue\AttributeValueDeleteEvent;
 use JobMetric\Attribute\Events\AttributeValue\AttributeValueStoreEvent;
 use JobMetric\Attribute\Events\AttributeValue\AttributeValueUpdateEvent;
 use JobMetric\Attribute\Exceptions\AttributeNotFoundException;
+use JobMetric\Attribute\Exceptions\AttributeValueAttributeMismatchException;
 use JobMetric\Attribute\Exceptions\AttributeValueNotFoundException;
 use JobMetric\Attribute\Exceptions\AttributeValueUsedException;
 use JobMetric\Attribute\Http\Requests\SetTranslationAttributeValueRequest;
@@ -161,7 +163,11 @@ class AttributeValue extends AbstractCrudService
             ]);
         }
 
-        AttributeModel::query()->findOrFail($data['attribute_id']);
+        try {
+            AttributeModel::query()->findOrFail($data['attribute_id']);
+        } catch (ModelNotFoundException $e) {
+            throw new AttributeNotFoundException((int) $data['attribute_id'], previous: $e);
+        }
 
         $data = dto($data, StoreAttributeValueRequest::class, [
             'attribute_id' => (int) $data['attribute_id'],
@@ -260,8 +266,6 @@ class AttributeValue extends AbstractCrudService
      * @param array<int, string> $with
      *
      * @return Response
-     * @throws AttributeNotFoundException
-     * @throws AttributeValueNotFoundException
      * @throws Throwable
      */
     public function updateForAttribute(int $attributeId, int $attributeValueId, array $data, array $with = []): Response
@@ -273,15 +277,13 @@ class AttributeValue extends AbstractCrudService
         }
 
         if ((int) $value->getAttribute('attribute_id') !== $attributeId) {
-            throw new AttributeNotFoundException($attributeId);
+            throw new AttributeValueAttributeMismatchException($attributeValueId, $attributeId);
         }
 
         return $this->update($attributeValueId, $data, $with);
     }
 
     /**
-     * Delete ensuring the value belongs to the given attribute.
-     *
      * @param array<string, mixed> $data
      * @param array<int, string> $with
      *
@@ -294,8 +296,6 @@ class AttributeValue extends AbstractCrudService
     }
 
     /**
-     * Update ensuring the value belongs to the given attribute.
-     *
      * @param int $id
      * @param array<string, mixed> $data
      * @param array<int, string> $with
@@ -305,12 +305,14 @@ class AttributeValue extends AbstractCrudService
      */
     public function update(int $id, array $data, array $with = []): Response
     {
-        return parent::update($id, $data, $this->mutationWith($with));
+        try {
+            return parent::update($id, $data, $this->mutationWith($with));
+        } catch (ModelNotFoundException $e) {
+            throw new AttributeValueNotFoundException($id, previous: $e);
+        }
     }
 
     /**
-     * Delete ensuring the value belongs to the given attribute.
-     *
      * @param int $id
      * @param array<int, string> $with
      *
@@ -319,7 +321,11 @@ class AttributeValue extends AbstractCrudService
      */
     public function destroy(int $id, array $with = []): Response
     {
-        return parent::destroy($id, $this->mutationWith($with));
+        try {
+            return parent::destroy($id, $this->mutationWith($with));
+        } catch (ModelNotFoundException $e) {
+            throw new AttributeValueNotFoundException($id, previous: $e);
+        }
     }
 
     /**
@@ -334,6 +340,23 @@ class AttributeValue extends AbstractCrudService
     public function delete(int $id, array $with = []): Response
     {
         return $this->destroy($id, $with);
+    }
+
+    /**
+     * @param int $id
+     * @param array<int, string> $with
+     * @param string|null $mode
+     *
+     * @return Response
+     * @throws Throwable
+     */
+    public function show(int $id, array $with = [], ?string $mode = null): Response
+    {
+        try {
+            return parent::show($id, $with, $mode);
+        } catch (ModelNotFoundException $e) {
+            throw new AttributeValueNotFoundException($id, previous: $e);
+        }
     }
 
     /**
@@ -369,14 +392,14 @@ class AttributeValue extends AbstractCrudService
      * @param int $attribute_value_id
      *
      * @return Response
-     * @throws AttributeNotFoundException
+     * @throws AttributeValueNotFoundException
      */
     public function usedIn(int $attribute_value_id): Response
     {
         $attribute_value = AttributeValueModel::query()->find($attribute_value_id);
 
         if (! $attribute_value) {
-            throw new AttributeNotFoundException($attribute_value_id);
+            throw new AttributeValueNotFoundException($attribute_value_id);
         }
 
         $rows = AttributeRelationValue::query()->where([
@@ -394,14 +417,14 @@ class AttributeValue extends AbstractCrudService
      * @param int $attribute_value_id
      *
      * @return bool
-     * @throws AttributeNotFoundException
+     * @throws AttributeValueNotFoundException
      */
     public function hasUsed(int $attribute_value_id): bool
     {
         $attribute_value = AttributeValueModel::query()->find($attribute_value_id);
 
         if (! $attribute_value) {
-            throw new AttributeNotFoundException($attribute_value_id);
+            throw new AttributeValueNotFoundException($attribute_value_id);
         }
 
         return AttributeRelationValue::query()->where([
@@ -422,7 +445,11 @@ class AttributeValue extends AbstractCrudService
         $validated = dto($data, SetTranslationAttributeValueRequest::class);
 
         return DB::transaction(function () use ($validated) {
-            $attribute_value = AttributeValueModel::query()->findOrFail($validated['translatable_id']);
+            try {
+                $attribute_value = AttributeValueModel::query()->findOrFail($validated['translatable_id']);
+            } catch (ModelNotFoundException $e) {
+                throw new AttributeValueNotFoundException((int) $validated['translatable_id'], previous: $e);
+            }
 
             foreach ($validated['translation'] as $locale => $translation_data) {
                 foreach ($translation_data as $translation_key => $translation_value) {
