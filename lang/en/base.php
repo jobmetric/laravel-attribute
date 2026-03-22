@@ -157,4 +157,35 @@ return [
         ],
     ],
 
+    'events' => [
+        'groups' => [
+            'attribute' => 'Attribute',
+            'attribute_value' => 'Attribute value',
+        ],
+        'attribute_stored' => [
+            'title' => 'Attribute Stored',
+            'description' => 'This event is triggered when an attribute is created.',
+        ],
+        'attribute_updated' => [
+            'title' => 'Attribute Updated',
+            'description' => 'This event is triggered when an attribute is updated.',
+        ],
+        'attribute_deleted' => [
+            'title' => 'Attribute Deleted',
+            'description' => 'This event is triggered when an attribute is deleted.',
+        ],
+        'attribute_value_stored' => [
+            'title' => 'Attribute Value Stored',
+            'description' => 'This event is triggered when an attribute value is created.',
+        ],
+        'attribute_value_updated' => [
+            'title' => 'Attribute Value Updated',
+            'description' => 'This event is triggered when an attribute value is updated.',
+        ],
+        'attribute_value_deleted' => [
+            'title' => 'Attribute Value Deleted',
+            'description' => 'This event is triggered when an attribute value is deleted.',
+        ],
+    ],
+
 ];

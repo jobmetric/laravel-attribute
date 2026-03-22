@@ -4,9 +4,9 @@ namespace JobMetric\Attribute\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use JobMetric\Attribute\Events\AttributeDeleteEvent;
-use JobMetric\Attribute\Events\AttributeStoreEvent;
-use JobMetric\Attribute\Events\AttributeUpdateEvent;
+use JobMetric\Attribute\Events\Attribute\AttributeDeleteEvent;
+use JobMetric\Attribute\Events\Attribute\AttributeStoreEvent;
+use JobMetric\Attribute\Events\Attribute\AttributeUpdateEvent;
 use JobMetric\Attribute\Exceptions\AttributeNotFoundException;
 use JobMetric\Attribute\Exceptions\AttributeUsedException;
 use JobMetric\Attribute\Http\Requests\SetTranslationAttributeRequest;

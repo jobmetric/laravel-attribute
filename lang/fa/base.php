@@ -157,4 +157,35 @@ return [
         ],
     ],
 
+    'events' => [
+        'groups' => [
+            'attribute' => 'ویژگی',
+            'attribute_value' => 'مقدار ویژگی',
+        ],
+        'attribute_stored' => [
+            'title' => 'ایجاد ویژگی',
+            'description' => 'هنگام ایجاد یک ویژگی جدید این رویداد فعال می‌شود.',
+        ],
+        'attribute_updated' => [
+            'title' => 'به‌روزرسانی ویژگی',
+            'description' => 'هنگام به‌روزرسانی یک ویژگی این رویداد فعال می‌شود.',
+        ],
+        'attribute_deleted' => [
+            'title' => 'حذف ویژگی',
+            'description' => 'هنگام حذف یک ویژگی این رویداد فعال می‌شود.',
+        ],
+        'attribute_value_stored' => [
+            'title' => 'ایجاد مقدار ویژگی',
+            'description' => 'هنگام ایجاد یک مقدار ویژگی جدید این رویداد فعال می‌شود.',
+        ],
+        'attribute_value_updated' => [
+            'title' => 'به‌روزرسانی مقدار ویژگی',
+            'description' => 'هنگام به‌روزرسانی یک مقدار ویژگی این رویداد فعال می‌شود.',
+        ],
+        'attribute_value_deleted' => [
+            'title' => 'حذف مقدار ویژگی',
+            'description' => 'هنگام حذف یک مقدار ویژگی این رویداد فعال می‌شود.',
+        ],
+    ],
+
 ];
